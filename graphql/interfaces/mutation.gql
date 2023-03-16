@@ -1,0 +1,4 @@
+type Mutation {
+  createAuthor(givenName: String, lastName: String, country: String, birthdate: Date): Author
+  createBook(title: String, author: ID, genre: String, publicationDate: Date): Book
+}
