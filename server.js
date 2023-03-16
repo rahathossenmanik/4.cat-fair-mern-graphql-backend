@@ -35,7 +35,8 @@ const startAppolloServer = async () => {
   });
 
   app.listen({ port }, () => {
-    console.log(`Server is Running on: http://localhost:${port}`);
+    console.log(`REST API is Running on: http://localhost:${port}`);
+    console.log(`GraphQL is Running on: http://localhost:${port}${server.graphqlPath}`);
   });
 };
 
