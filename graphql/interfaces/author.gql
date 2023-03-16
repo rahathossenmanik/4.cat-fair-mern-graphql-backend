@@ -1,0 +1,8 @@
+type Author {
+  id: ID!
+  givenName: String!
+  lastName: String!
+  country: String!
+  birthdate: Date!
+  books: [Book!]!
+}

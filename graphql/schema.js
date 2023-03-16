@@ -1,74 +1,22 @@
-const { gql } = require('apollo-server-express');
-const { GraphQLScalarType } = require('graphql');
+const { readdirSync, readFileSync } = require('fs');
+const { join } = require('path');
+const { queries, author, book, date } = require('./resolvers/queries');
 
-const Author = require('../models/Author');
-const Book = require('../models/Book');
+const gqlFiles = readdirSync(join(__dirname, './interfaces'));
 
-exports.typeDefs = gql(`
-  scalar Date
+let typeDefs = '';
 
-  type Query {
-    authors: [Author!]!
-    author(id: ID!): Author
-    books: [Book!]!
-    book(id: ID!): Book
-  }
+gqlFiles.forEach((file) => {
+  typeDefs += readFileSync(join(__dirname, './interfaces', file), {
+    encoding: 'utf8'
+  });
+});
 
-  type Author {
-    id: ID!
-    givenName: String!
-    lastName: String!
-    country: String!
-    birthdate: Date!
-    books: [Book!]!
-  }
-
-  type Book {
-    id: ID!
-    title: String!
-    author: Author!
-    genre: String!
-    publicationDate: Date!
-  }
-`);
+exports.typeDefs = typeDefs;
 
 exports.resolvers = {
-  Date: new GraphQLScalarType({
-    name: 'Date',
-    description: 'A date represented as an ISO-8601 string',
-    serialize: (value) => value.toISOString().slice(0, 10)
-  }),
-  Query: {
-    authors: () => {
-      return Author.find().then((data) => data);
-    },
-    author: (parent, args) => {
-      const { id } = args;
-      return Author.findById(id).then((data) => data);
-    },
-    books: () => {
-      return Book.find().then((data) => data);
-    },
-    book: (parent, args) => {
-      const { id } = args;
-      return Book.findById(id).then((data) => data);
-    }
-  },
-  Author: {
-    books: (parent) => {
-      const { id } = parent;
-      return Book.find()
-        .where('author')
-        .equals(id)
-        .then((data) => data);
-    }
-  },
-  Book: {
-    author: (parent) => {
-      const { id } = parent;
-      return Book.findById(id)
-        .populate('author')
-        .then((data) => data.author);
-    }
-  }
+  Date: date,
+  Query: queries,
+  Author: author,
+  Book: book
 };
