@@ -15,5 +15,15 @@ exports.mutations = {
   updateBook: async (_, { id, title, author, genre, publicationDate }, { dataSources }) => {
     await Book.findByIdAndUpdate(id, { id, title, author, genre, publicationDate });
     return Book.findById(id);
+  },
+  deleteAuthor: async (_, { id }, { dataSources }) => {
+    const author = await Author.findById(id);
+    await Author.findByIdAndDelete(id);
+    return author;
+  },
+  deleteBook: async (_, { id }, { dataSources }) => {
+    const book = await Book.findById(id);
+    await Book.findByIdAndDelete(id);
+    return book;
   }
 };
