@@ -1,4 +1,6 @@
 type Mutation {
   createAuthor(givenName: String, lastName: String, country: String, birthdate: Date): Author
   createBook(title: String, author: ID, genre: String, publicationDate: Date): Book
+  updateAuthor(id: ID!, givenName: String, lastName: String, country: String, birthdate: Date): Author
+  updateBook(id: ID!, title: String, author: ID, genre: String, publicationDate: Date): Book
 }

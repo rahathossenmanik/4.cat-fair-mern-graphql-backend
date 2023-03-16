@@ -7,5 +7,13 @@ exports.mutations = {
   },
   createBook: async (_, { title, author, genre, publicationDate }, { dataSources }) => {
     return await Book.create({ title, author, genre, publicationDate });
+  },
+  updateAuthor: async (_, { id, givenName, lastName, country, birthdate }, { dataSources }) => {
+    await Author.findByIdAndUpdate(id, { id, givenName, lastName, country, birthdate });
+    return Author.findById(id);
+  },
+  updateBook: async (_, { id, title, author, genre, publicationDate }, { dataSources }) => {
+    await Book.findByIdAndUpdate(id, { id, title, author, genre, publicationDate });
+    return Book.findById(id);
   }
 };
