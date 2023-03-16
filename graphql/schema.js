@@ -1,6 +1,6 @@
 const { readdirSync, readFileSync } = require('fs');
 const { join } = require('path');
-const { queries, author, book, date } = require('./resolvers/queries');
+const { resolvers } = require('./resolvers');
 
 const gqlFiles = readdirSync(join(__dirname, './interfaces'));
 
@@ -14,9 +14,4 @@ gqlFiles.forEach((file) => {
 
 exports.typeDefs = typeDefs;
 
-exports.resolvers = {
-  Date: date,
-  Query: queries,
-  Author: author,
-  Book: book
-};
+exports.resolvers = resolvers;
